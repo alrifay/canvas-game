@@ -6,7 +6,7 @@
         "sourceMap": false,
         "charset": "utf-8",
         "watch": true,
-        "outDir": "./js/"
+        "outDir": "./js/compiled-js/"
     },
     "include": [
         "./ts/**/*.ts"

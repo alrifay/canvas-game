@@ -1,7 +1,7 @@
 {
   "name": "canvas-game",
   "version": "0.0.0",
-  "description": "learn how to make javascript game",
+  "description": "learn how to make javascript game with canvas",
   "main": "main.js",
   "scripts": {
     "start": "live-server",
@@ -10,6 +10,8 @@
   "keywords": [
     "js",
     "javascript",
+    "ts",
+    "typescript",
     "game",
     "canvas",
     "html"
@@ -18,5 +20,13 @@
   "license": "MIT",
   "devDependencies": {
     "live-server": "^1.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MohamedAl-Rifay/canvas-game.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MohamedAl-Rifay/canvas-game/issues"
+  },
+  "homepage": "https://github.com/MohamedAl-Rifay/canvas-game#readme"
 }

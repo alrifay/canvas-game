@@ -1,0 +1,21 @@
+{
+  "name": "canvas-game",
+  "version": "0.0.0",
+  "description": "learn how to make javascript game",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "game",
+    "canvas",
+    "html"
+  ],
+  "author": "Mohammed Al-rifay",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.0"
+  }
+}

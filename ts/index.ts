@@ -25,7 +25,7 @@ function main(): void {
         updateAll();
     };
     moveTimer = window.setInterval(updateAll, 1000 / framesBerSecond);
-};
+}
 
 function updateAll() {
     canvasContext.fillStyle = 'black';
@@ -47,7 +47,7 @@ function updateAll() {
     if (ballY + ballR >= canvasGame.height || ballY <= ballR) {
         ballYPos *= -1;
     }
-    if (i == 0) {
+    if (i === 0) {
         window.clearInterval(moveTimer);
     }
 }

@@ -10,7 +10,8 @@ let ballY: number = BallRadius;
 let ballYPos: number = 4;
 //Paddle
 const PaddleWidth: number = 150;
-const PaddleHeight: number = 50;
+const PaddleHeight: number = 20;
+const PaddleGap: number = 20;
 let paddleX: number = 0;
 let paddleY: number = 0;
 
@@ -24,7 +25,7 @@ function main(): void {
     CanvasGame.height = CanvasGame.clientHeight;
 
     paddleX = (CanvasGame.width - PaddleWidth) / 2;
-    paddleY = CanvasGame.height - PaddleHeight;
+    //paddleY = CanvasGame.height - PaddleGap;
 
     CanvasGame.onclick = (evt: MouseEvent): void => {
         ballX = evt.clientX - CanvasGame.offsetLeft;
@@ -46,6 +47,11 @@ function update(): void {
     move();
 }
 
+function resetBall(): void {
+    ballX = CanvasGame.width / 2;
+    ballY = CanvasGame.height / 2;
+}
+
 function move(): void {
     ballX += ballXPos;
     ballY += ballYPos;
@@ -56,7 +62,10 @@ function move(): void {
     if (/*ballY + BallRadius >= CanvasGame.height ||*/ ballY <= BallRadius) {
         ballYPos *= -1;
     }
-    if (ballY + BallRadius >= CanvasGame.height - PaddleHeight && ballX >= paddleX - PaddleWidth / 2 && ballX <= paddleX + PaddleWidth / 2) {
+    if (ballY >= CanvasGame.height) {
+        resetBall();
+    }
+    if (ballY + BallRadius >= CanvasGame.height - PaddleHeight - PaddleGap && ballX >= paddleX && ballX <= paddleX + PaddleWidth) {
         ballYPos *= -1;
     }
 }
@@ -65,7 +74,7 @@ function draw(): void {
     //Clear view
     colorRect(0, 0, CanvasGame.width, CanvasGame.height, 'black');
     //Draw Paddle
-    colorRect(paddleX, paddleY, PaddleWidth, PaddleHeight, 'green');
+    colorRect(paddleX, CanvasGame.height - PaddleGap - PaddleHeight, PaddleWidth, PaddleHeight, 'green');
     //Draw circle
     let CircleColor: string = 'white';//`#${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}`;
     colorCircle(ballX, ballY, BallRadius, CircleColor);

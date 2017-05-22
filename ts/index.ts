@@ -1,7 +1,7 @@
 const CanvasGame: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('canvas-game');
 const Body: HTMLBodyElement = <HTMLBodyElement>document.body;
 const CanvasContext: CanvasRenderingContext2D = CanvasGame.getContext('2d');
-const FramesBerSecond: number = 30;
+const FramesBerSecond: number = 60;
 //Ball
 const BallRadius: number = 20;
 let ballX: number = BallRadius;
@@ -47,6 +47,7 @@ function update(): void {
 function resetBall(): void {
     ballX = CanvasGame.width / 2;
     ballY = CanvasGame.height / 2;
+    ballXPos = ballYPos = 4;
 }
 
 function move(): void {
@@ -68,7 +69,7 @@ function move(): void {
     if (ballY + BallRadius >= CanvasGame.height - PaddleHeight - PaddleGap && ballX >= paddleX && ballX <= paddleX + PaddleWidth) {
         let paddleCenter = paddleX + PaddleWidth / 2;
         ballYPos *= -1;
-        ballXPos = (ballX - paddleCenter) * 0.35;
+        ballXPos = (ballX - paddleCenter) * 0.2;
     }
 }
 
@@ -77,6 +78,12 @@ function draw(): void {
     colorRect(0, 0, CanvasGame.width, CanvasGame.height, 'black');
     //Draw Paddle
     colorRect(paddleX, CanvasGame.height - PaddleGap - PaddleHeight, PaddleWidth, PaddleHeight, 'green');
+    CanvasContext.beginPath();
+    CanvasContext.moveTo(paddleX + PaddleWidth / 2, CanvasGame.height - PaddleGap - PaddleHeight);
+    CanvasContext.lineTo(paddleX + PaddleWidth / 2, CanvasGame.height - PaddleGap);
+    CanvasContext.closePath();
+    CanvasContext.strokeStyle = 'blue';
+    CanvasContext.stroke();
     //Draw circle
     let CircleColor: string = 'white';//`#${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}`;
     colorCircle(ballX, ballY, BallRadius, CircleColor);

@@ -19,8 +19,8 @@ function main(): void {
     canvasGame.width = canvasGame.clientWidth;
     canvasGame.height = canvasGame.clientHeight;
     canvasGame.onclick = (evt: MouseEvent) => {
-        ballX = evt.x;
-        ballY = evt.y;
+        ballX = evt.clientX - canvasGame.offsetLeft;
+        ballY = evt.clientY - canvasGame.offsetTop;
         update();
     };
     moveTimer = window.setInterval(update, 1000 / framesBerSecond);

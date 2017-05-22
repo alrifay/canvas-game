@@ -1,14 +1,18 @@
-const canvasGame: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('canvas-game');
-const body: HTMLBodyElement = <HTMLBodyElement>document.body;
-const canvasContext: CanvasRenderingContext2D = canvasGame.getContext('2d');
-const framesBerSecond: number = 30;
-const ballR: number = 20;
-let moveTimer: number = 0;
-let ballX: number = ballR;
+const CanvasGame: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('canvas-game');
+const Body: HTMLBodyElement = <HTMLBodyElement>document.body;
+const CanvasContext: CanvasRenderingContext2D = CanvasGame.getContext('2d');
+const FramesBerSecond: number = 30;
+//Ball
+const BallRadius: number = 20;
+let ballX: number = BallRadius;
 let ballXPos: number = 4;
-let ballY: number = ballR;
-let ballYPos: number = 2;
-let i: number = 2 * 14;
+let ballY: number = BallRadius;
+let ballYPos: number = 4;
+//Paddle
+const PaddleWidth: number = 150;
+const PaddleHeight: number = 50;
+let paddleX: number = 0;
+let paddleY: number = 0;
 
 function hex6(num: number, s: number): string {
     let n = num.toString(16);
@@ -16,14 +20,25 @@ function hex6(num: number, s: number): string {
 }
 
 function main(): void {
-    canvasGame.width = canvasGame.clientWidth;
-    canvasGame.height = canvasGame.clientHeight;
-    canvasGame.onclick = (evt: MouseEvent) => {
-        ballX = evt.clientX - canvasGame.offsetLeft;
-        ballY = evt.clientY - canvasGame.offsetTop;
+    CanvasGame.width = CanvasGame.clientWidth;
+    CanvasGame.height = CanvasGame.clientHeight;
+
+    paddleX = (CanvasGame.width - PaddleWidth) / 2;
+    paddleY = CanvasGame.height - PaddleHeight;
+
+    CanvasGame.onclick = (evt: MouseEvent): void => {
+        ballX = evt.clientX - CanvasGame.offsetLeft;
+        ballY = evt.clientY - CanvasGame.offsetTop;
         update();
     };
-    moveTimer = window.setInterval(update, 1000 / framesBerSecond);
+
+    CanvasGame.onmousemove = (evt: MouseEvent): void => {
+        paddleX = evt.clientX - CanvasGame.offsetLeft - PaddleWidth / 2;
+        //paddleY = evt.clientY - CanvasGame.offsetTop;
+        //update();
+    };
+
+    window.setInterval(update, 1000 / FramesBerSecond);
 }
 
 function update(): void {
@@ -35,34 +50,38 @@ function move(): void {
     ballX += ballXPos;
     ballY += ballYPos;
 
-    if (ballX + ballR >= canvasGame.width || ballX <= ballR) {
-        ballXPos *= -1; i--;
+    if (ballX + BallRadius >= CanvasGame.width || ballX <= BallRadius) {
+        ballXPos *= -1;
     }
-    if (ballY + ballR >= canvasGame.height || ballY <= ballR) {
+    if (/*ballY + BallRadius >= CanvasGame.height ||*/ ballY <= BallRadius) {
         ballYPos *= -1;
     }
-    if (i === 0) {
-        window.clearInterval(moveTimer);
+    if (ballY + BallRadius >= CanvasGame.height - PaddleHeight && ballX >= paddleX - PaddleWidth / 2 && ballX <= paddleX + PaddleWidth / 2) {
+        ballYPos *= -1;
     }
 }
 
 function draw(): void {
-    colorRect(0, 0, canvasGame.width, canvasGame.height, 'black');
-    let CircleColor: string = `#${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}`;
-    colorCircle(ballX, ballY, ballR, CircleColor);
+    //Clear view
+    colorRect(0, 0, CanvasGame.width, CanvasGame.height, 'black');
+    //Draw Paddle
+    colorRect(paddleX, paddleY, PaddleWidth, PaddleHeight, 'green');
+    //Draw circle
+    let CircleColor: string = 'white';//`#${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}`;
+    colorCircle(ballX, ballY, BallRadius, CircleColor);
 }
 
 function colorRect(topLeftX: number, topLeftY: number, width: number, height: number, fillColor: string): void {
-    canvasContext.fillStyle = fillColor;
-    canvasContext.fillRect(topLeftX, topLeftY, width, height);
+    CanvasContext.fillStyle = fillColor;
+    CanvasContext.fillRect(topLeftX, topLeftY, width, height);
 }
 
 function colorCircle(centerX: number, centerY: number, radius: number, fillColor: string): void {
-    canvasContext.fillStyle = fillColor;
-    canvasContext.beginPath();
-    canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
-    canvasContext.fill();
-    canvasContext.closePath();
+    CanvasContext.fillStyle = fillColor;
+    CanvasContext.beginPath();
+    CanvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+    CanvasContext.fill();
+    CanvasContext.closePath();
 }
 
 window.onload = main;

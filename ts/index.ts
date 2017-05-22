@@ -1,16 +1,16 @@
-const canvasGame = <HTMLCanvasElement>document.getElementById('canvas-game');
-const body = <HTMLBodyElement>document.body;
-const canvasContext = canvasGame.getContext('2d');
-const framesBerSecond = 1000;
-const ballR = 20;
-let moveTimer = 0;
-let ballX = ballR;
-let ballXPos = 4;
-let ballY = ballR;
-let ballYPos = 2;
-let i = 2 * 14;
+const canvasGame: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('canvas-game');
+const body: HTMLBodyElement = <HTMLBodyElement>document.body;
+const canvasContext: CanvasRenderingContext2D = canvasGame.getContext('2d');
+const framesBerSecond: number = 1000;
+const ballR: number = 20;
+let moveTimer: number = 0;
+let ballX: number = ballR;
+let ballXPos: number = 4;
+let ballY: number = ballR;
+let ballYPos: number = 2;
+let i: number = 2 * 14;
 
-function hex6(num: number, s: number) {
+function hex6(num: number, s: number): string {
     let n = num.toString(16);
     return '0'.repeat(s - n.length) + n;
 }
@@ -22,27 +22,22 @@ function main(): void {
     canvasGame.onclick = (evt: MouseEvent) => {
         ballX = evt.x;
         ballY = evt.y;
-        updateAll();
+        update();
     };
-    moveTimer = window.setInterval(updateAll, 1000 / framesBerSecond);
+    moveTimer = window.setInterval(update, 1000 / framesBerSecond);
 }
 
-function updateAll() {
-    canvasContext.fillStyle = 'black';
-    canvasContext.fillRect(0, 0, canvasGame.width, canvasGame.height);
+function update(): void {
+    draw();
+    move();
+}
 
-    canvasContext.fillStyle = `#${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}`;
-    canvasContext.beginPath();
-    canvasContext.arc(ballX, ballY, ballR, 0, Math.PI * 2, true);
-    canvasContext.fill();
-    canvasContext.closePath();
-
+function move(): void {
     ballX += ballXPos;
     ballY += ballYPos;
 
     if (ballX + ballR >= canvasGame.width || ballX <= ballR) {
         ballXPos *= -1; i--;
-        //console.info(`i = ${i}`);
     }
     if (ballY + ballR >= canvasGame.height || ballY <= ballR) {
         ballYPos *= -1;
@@ -50,6 +45,25 @@ function updateAll() {
     if (i === 0) {
         window.clearInterval(moveTimer);
     }
+}
+
+function draw(): void {
+    colorRect(0, 0, canvasGame.width, canvasGame.height, 'black');
+    let CircleColor: string = `#${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}`;
+    colorCircle(ballX, ballY, ballR, CircleColor);
+}
+
+function colorRect(topLeftX: number, topLeftY: number, width: number, height: number, fillColor: string): void {
+    canvasContext.fillStyle = fillColor;
+    canvasContext.fillRect(topLeftX, topLeftY, width, height);
+}
+
+function colorCircle(centerX: number, centerY: number, radius: number, fillColor: string): void {
+    canvasContext.fillStyle = fillColor;
+    canvasContext.beginPath();
+    canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+    canvasContext.fill();
+    canvasContext.closePath();
 }
 
 window.onload = main;

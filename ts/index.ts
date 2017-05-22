@@ -5,9 +5,9 @@ const FramesBerSecond: number = 30;
 //Ball
 const BallRadius: number = 20;
 let ballX: number = BallRadius;
-let ballXPos: number = 4;
+let ballXPos: number = 6;
 let ballY: number = BallRadius;
-let ballYPos: number = 4;
+let ballYPos: number = 6;
 //Paddle
 const PaddleWidth: number = 150;
 const PaddleHeight: number = 20;
@@ -25,7 +25,6 @@ function main(): void {
     CanvasGame.height = CanvasGame.clientHeight;
 
     paddleX = (CanvasGame.width - PaddleWidth) / 2;
-    //paddleY = CanvasGame.height - PaddleGap;
 
     CanvasGame.onclick = (evt: MouseEvent): void => {
         ballX = evt.clientX - CanvasGame.offsetLeft;
@@ -35,8 +34,6 @@ function main(): void {
 
     CanvasGame.onmousemove = (evt: MouseEvent): void => {
         paddleX = evt.clientX - CanvasGame.offsetLeft - PaddleWidth / 2;
-        //paddleY = evt.clientY - CanvasGame.offsetTop;
-        //update();
     };
 
     window.setInterval(update, 1000 / FramesBerSecond);
@@ -55,18 +52,23 @@ function resetBall(): void {
 function move(): void {
     ballX += ballXPos;
     ballY += ballYPos;
-
+    //Ball hit the wall
     if (ballX + BallRadius >= CanvasGame.width || ballX <= BallRadius) {
         ballXPos *= -1;
     }
-    if (/*ballY + BallRadius >= CanvasGame.height ||*/ ballY <= BallRadius) {
+    //Ball hit the roof
+    if (ballY <= BallRadius) {
         ballYPos *= -1;
     }
+    //Ball fall
     if (ballY >= CanvasGame.height) {
         resetBall();
     }
+    //Ball hit the Paddle
     if (ballY + BallRadius >= CanvasGame.height - PaddleHeight - PaddleGap && ballX >= paddleX && ballX <= paddleX + PaddleWidth) {
+        let paddleCenter = paddleX + PaddleWidth / 2;
         ballYPos *= -1;
+        ballXPos = (ballX - paddleCenter) * 0.35;
     }
 }
 

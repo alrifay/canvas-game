@@ -1,7 +1,7 @@
 const canvasGame: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('canvas-game');
 const body: HTMLBodyElement = <HTMLBodyElement>document.body;
 const canvasContext: CanvasRenderingContext2D = canvasGame.getContext('2d');
-const framesBerSecond: number = 1000;
+const framesBerSecond: number = 30;
 const ballR: number = 20;
 let moveTimer: number = 0;
 let ballX: number = ballR;
@@ -16,7 +16,6 @@ function hex6(num: number, s: number): string {
 }
 
 function main(): void {
-    document.body.style.height = (window.innerHeight) + 'px';
     canvasGame.width = canvasGame.clientWidth;
     canvasGame.height = canvasGame.clientHeight;
     canvasGame.onclick = (evt: MouseEvent) => {

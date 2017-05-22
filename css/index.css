@@ -10,11 +10,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #eee;
 }
 
 #canvas-game {
-    /*margin: 0 auto;
-    padding: 0;*/
+    box-shadow: 0 0 5px 3px blue;
     width: 1200px;
     height: 600px;
 }

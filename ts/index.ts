@@ -7,6 +7,7 @@ let MouseX = 0;
 let MouseY = 0;
 //Ball
 const BallRadius: number = 20;
+const BallColor: string = 'red';
 let ballX: number = BallRadius;
 let ballXPos: number = 6;
 let ballY: number = BallRadius;
@@ -17,6 +18,11 @@ const PaddleHeight: number = 20;
 const PaddleGap: number = 20;
 let paddleX: number = 0;
 let paddleY: number = 0;
+//Brick
+const BrickWidth: number = 100;
+const BrickHeight: number = 50;
+const BricksCount: number = 11;
+const BrickGrid: boolean[] = new Array(BricksCount);
 
 function hex6(num: number, s: number): string {
     let n = num.toString(16);
@@ -28,6 +34,9 @@ function main(): void {
     CanvasGame.height = CanvasGame.clientHeight;
 
     paddleX = (CanvasGame.width - PaddleWidth) / 2;
+
+    resetBricks();
+    resetBall();
 
     CanvasGame.onclick = (evt: MouseEvent): void => {
         ballX = evt.clientX - CanvasGame.offsetLeft;
@@ -55,6 +64,12 @@ function resetBall(): void {
     ballXPos = ballYPos = 4;
 }
 
+function resetBricks(): void {
+    for (let i = 0; i < BricksCount; i++) {
+        BrickGrid[i] = Math.random() > 0.5;
+    }
+}
+
 function move(): void {
     ballX += ballXPos;
     ballY += ballYPos;
@@ -78,22 +93,33 @@ function move(): void {
     }
 }
 
+function drawBricks(): void {
+    for (let i = 0; i < BrickGrid.length; i++) {
+        if (BrickGrid[i]) {
+            colorRect((BrickWidth + 2) * i + 2, 2, BrickWidth, BrickHeight, 'blue');
+        }
+    }
+}
+
 function draw(): void {
     //Clear view
     colorRect(0, 0, CanvasGame.width, CanvasGame.height, 'black');
+    //Bricks
+    drawBricks();
     //Paddle
     colorRect(paddleX, CanvasGame.height - PaddleGap - PaddleHeight, PaddleWidth, PaddleHeight, 'green');
     //center line in paddle
     colorLine(paddleX + PaddleWidth / 2, CanvasGame.height - PaddleGap - PaddleHeight,
         paddleX + PaddleWidth / 2, CanvasGame.height - PaddleGap, 'blue');
     //circle
-    let CircleColor: string = 'white';//`#${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}`;
+    let CircleColor: string = BallColor;//`#${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}${hex6(Math.floor(Math.random() * 255), 2)}`;
     colorCircle(ballX, ballY, BallRadius, CircleColor);
     //Mouse position
-    colorText(`(${MouseX}, ${MouseY})`, MouseX, MouseY);
+    colorText(`(${MouseX}, ${MouseY})`, MouseX, MouseY, 'white');
 }
 
-function colorText(text: string, x: number, y: number): void {
+function colorText(text: string, x: number, y: number, color: string): void {
+    CanvasContext.fillStyle = color;
     CanvasContext.fillText(text, x, y);
 }
 
